@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRMC EMED</title>
+</head>
+<body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="theme-color" content="#0a2e52">
+<style>
+:root{--navy:#0a2e52;--blue:#1565c0;--teal:#00897b;--red:#d32f2f;--amber:#f59e0b;--bg:#f2f5f9;--card:#fff;--tx:#1b2735;--mut:#6a7785;--line:#e3e8ef;--top:#fff;--inp:#fff;--inpbd:#c5cfdb;--btn2:#e8edf3;--btn2t:#1b2735;--track:#edf1f6;--th:#eef2f7;--soft:#f7f9fb;--chip:#e8f1fb;--accent:#1565c0;--side:#cfe0f3;--sidehl:#12406f}
+body.dark,html[data-theme="dark"] body{--navy:#061a2e;--blue:#4c9aff;--bg:#0e141b;--card:#161d26;--tx:#e7edf4;--mut:#93a1b1;--line:#26313d;--top:#111823;--inp:#1b2430;--inpbd:#33404e;--btn2:#232e3b;--btn2t:#e7edf4;--track:#26313d;--th:#1e2732;--soft:#141b24;--chip:#1c2b3a;--accent:#4c9aff;--side:#a9c4dd;--sidehl:#132b45;--red:#ff6b6b;--teal:#3fd0c0;--amber:#ffb74d}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,system-ui,sans-serif;background:var(--bg);color:var(--tx);display:flex;min-height:100vh}
+aside{width:220px;background:var(--navy);color:#cfe0f3;padding:18px 0;position:sticky;top:0;height:100vh;flex-shrink:0}
+aside h1{font-size:15px;color:#fff;margin:0 18px 4px;line-height:1.3}
+aside small{display:block;margin:0 18px 18px;font-size:11px;opacity:.7}
+aside a{display:block;padding:11px 18px;color:#cfe0f3;text-decoration:none;font-size:14px;border-left:3px solid transparent;cursor:pointer}
+aside a.on,aside a:hover{background:#12406f;color:#fff;border-color:#4fc3f7}
+.content{flex:1;min-width:0}
+.top{background:var(--top);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.top h2{margin:0;font-size:18px;flex:1}
+select,input,button{font:inherit}
+select,input{padding:8px 10px;border:1px solid var(--inpbd);border-radius:8px;background:var(--inp);color:var(--tx);width:100%}
+.top select{width:auto}
+button{padding:8px 14px;border:0;border-radius:8px;background:var(--blue);color:#fff;cursor:pointer;font-weight:600}
+button.g{background:var(--btn2);color:var(--btn2t)}button.r{background:#fde8e8;color:#b3261e}
+ body.dark button.r{background:#3a2020;color:#ff9a94}
+ body.dark .k{box-shadow:0 1px 3px #0006}.card{box-shadow:0 1px 3px #0003}
+.page{display:none;padding:20px 24px}.page.on{display:block}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:16px}
+.k{background:var(--card);border-radius:12px;padding:14px 16px;border-left:5px solid var(--blue);box-shadow:0 1px 3px #0001}
+.k span{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+.k b{display:block;font-size:28px;margin:4px 0 2px}
+.k i{font-size:11px;color:var(--mut);font-style:normal}
+.k.t{border-color:var(--teal)}.k.r{border-color:var(--red)}.k.a{border-color:var(--amber)}
+.c2{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 3px #0001;min-width:0}
+.card h3{margin:0 0 4px;font-size:15px}.card p.s{margin:0 0 12px;font-size:12px;color:var(--mut)}
+.hb{display:grid;grid-template-columns:28px minmax(120px,42%) 1fr 70px;gap:8px;align-items:center;font-size:12.5px;margin:7px 0}
+.hb .n{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700}
+.hb .tr{background:var(--track);border-radius:6px;height:18px;overflow:hidden}
+.hb .f{height:100%;border-radius:6px}
+.hb em{font-style:normal;text-align:right;color:var(--mut)}
+.empty{color:var(--mut);font-size:13px;padding:14px;text-align:center;background:var(--soft);border-radius:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
+.donutw{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+label{display:block;font-size:12px;font-weight:600;margin:10px 0 3px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+.hide{display:none}
+tr.on td{background:var(--chip)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+tr.on td,tr.on th{background:var(--chip)}
+th{background:var(--th);text-align:left;padding:8px;position:sticky;top:0;color:var(--tx)}
+td{padding:7px 8px;border-bottom:1px solid var(--line)}
+.tag{padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;color:#fff}
+.ref{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.ref ol{margin:4px 0 12px;padding-left:22px;font-size:13px;line-height:1.7}
+.ref h4{background:#f4b183;color:#1b2735;margin:6px 0;padding:5px 8px;font-size:13px}
+.note{background:#fff8e1;color:#4a3a00;border-left:4px solid var(--amber);padding:10px 14px;border-radius:6px;font-size:12.5px;margin-bottom:14px}
+ body.dark .note{background:#2c2612;color:#ffe08a}
+.def{font-size:12.5px;line-height:1.7;color:var(--tx)}
+ td,th{color:var(--tx)}.def td:first-child{font-weight:600;width:210px}
+@media(max-width:760px){aside{display:none}.hb{grid-template-columns:24px 1fr 60px}.hb .tr{grid-column:1/-1;order:5}}
+@media print{aside,.top button,.top select,.top label,#thm{display:none}
+ body,body.dark{background:#fff!important;color:#1b2735!important}
+ body.dark .card,body.dark table,body.dark th,body.dark td{background:#fff!important;color:#1b2735!important;border-color:#e3e8ef!important}.page{display:block!important;break-inside:avoid}#pg-enc,#pg-rec{display:none!important}}
+.hubBack{display:block;width:calc(100% - 36px);margin:0 18px 10px;padding:7px 10px;border:1px solid #2c5f92;background:#12406f;color:#cfe0f3;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.hubBack:hover{background:#18528a;color:#fff}
+</style>
+<aside>
+<img id="brandLogo" alt="Cotabato Regional &amp; Medical Center – Emergency Medicine" style="width:84px;height:84px;object-fit:contain;display:block;margin:0 0 10px 18px;border-radius:50%;background:#fff">
+<h1>CRMC Department of<br>Emergency Medicine</h1><small>Registry &amp; Performance Dashboard</small><button class="hubBack" onclick="goHub()">← EMED Dashboard</button>
+<a class="on" data-p="dash">📊 Dashboard</a><a data-p="enc">📝 Encode Patient</a><a data-p="mon">📅 Monthly Report</a><a data-p="sec">🩺 Secondary Diagnosis</a><a data-p="oth">➕ Others (Specified)</a><a data-p="census">🧾 Census</a><a data-p="print">🖨 Print Census</a><a data-p="res">👨‍⚕️ Residents</a><a data-p="rec">🗂 Patient Records</a><a data-p="ref">📋 Official Top 10 Lists</a><a data-p="def">ℹ️ Measures &amp; Definitions</a>
+</aside>
+<div class="content">
+<div class="top"><h2 id="ttl">Dashboard</h2>
+<select id="pd"><option value="all">All dates</option><option value="d">Daily</option><option value="w">Weekly</option><option value="m" selected>Monthly</option><option value="y">Yearly</option></select>
+<input type="date" id="ref" style="width:auto">
+<button class="g" id="pv">‹</button><button class="g" id="nx">›</button><label style="margin:0" id="plab"></label>
+<button class="g" id="thm">🌙 Dark</button>
+<button class="g" onclick="window.print()">🖨 Print report</button></div>
+
+<!-- DASHBOARD -->
+<div class="page on" id="pg-dash">
+<div id="demoNote" class="note hide">Demo data is loaded for preview only. <a href="#" onclick="rmDemo();return false">Remove demo data</a> before real use.</div>
+<div class="grid kpis" id="kpis"></div>
+<div class="grid c2">
+<div class="card" style="grid-column:1/-1"><h3>Top 10 Diagnoses</h3><p class="s" id="topS"></p><div id="top"></div></div>
+<div class="card"><h3>Monthly ED visits</h3><p class="s">Number of consultations per month</p><div id="trend"></div></div>
+<div class="card"><h3>ED disposition</h3><p class="s">Outcome of each ED visit</p><div id="disp"></div></div>
+<div class="card"><h3>Triage acuity (ESI)</h3><p class="s">1 = most urgent · 5 = least urgent</p><div id="tri"></div></div>
+<div class="card"><h3>Age group &amp; sex</h3><p class="s">Patients per age group</p><div id="age"></div></div>
+<div class="card"><h3>Trauma – mechanism of injury</h3><p class="s" id="trS"></p><div id="tr"></div></div>
+<div class="card"><h3>Death – cause</h3><p class="s" id="deS"></p><div id="de"></div></div>
+</div></div>
+
+<!-- ENCODE -->
+<div class="page" id="pg-enc"><div class="card" style="max-width:900px">
+<h3>Encode a patient</h3><p class="s">Use the case number only. Do not type the patient's name.</p>
+<form id="f" class="form">
+<div><label>HRN / Case no. *</label><input name="pid" required placeholder="Hospital record number"></div>
+<div><label>Chief complaint</label><input name="cc" list="ccl" placeholder="e.g. fever, cough"></div>
+<div><label>Age *</label><input name="age" type="number" min="0" max="120" required></div>
+<div><label>Age unit</label><select name="unit"><option value="y">Years</option><option value="m">Months (under 1 yr)</option><option value="d">Days (newborn)</option></select></div>
+<div><label>Sex *</label><select name="sex"><option>Male</option><option>Female</option></select></div>
+<div><label>Date &amp; time of consultation *</label><input name="arr" type="datetime-local" required></div>
+<div><label>Primary diagnosis *</label><select name="dxsel" id="dxsel"><option value="">— select —</option></select></div>
+<div id="othw" class="hide"><label>Specify other diagnosis *</label><input name="oth" id="oth" placeholder="Type the actual diagnosis"></div>
+<div><label>Secondary diagnosis (optional)</label><select name="dx2" id="dx2"><option value="">— none —</option></select></div>
+<div id="oth2w" class="hide"><label>Specify secondary diagnosis *</label><input name="oth2" id="oth2" placeholder="Type the actual secondary diagnosis"></div>
+<div><label>Resident in charge</label><select name="res" id="res"><option value="">— select —</option></select></div>
+<div><label>Consultant on duty</label><select name="con" id="con"><option value="">— select —</option></select></div>
+<div><label>Category</label><select name="cat" id="cat"><option>Medical</option><option>Trauma</option><option>Surgical</option><option>OB-Gyne</option><option>Pediatric</option></select></div>
+<div id="trw" class="hide"><label>Mechanism of injury</label><input name="mech" list="mechl"></div>
+<div><label>Triage (ESI)</label><select name="tri"><option value="1">1 – Resuscitation</option><option value="2">2 – Emergent</option><option value="3" selected>3 – Urgent</option><option value="4">4 – Less urgent</option><option value="5">5 – Non-urgent</option></select></div>
+<div><label>Disposition</label><select name="disp" id="dsp"><option>Discharged</option><option>Admitted</option><option>Transferred</option><option>HAMA</option><option>Died</option></select></div>
+<div id="tw" class="hide"><label>Transferred to *</label><input name="tsvc" id="tsvc" list="tsvl" placeholder="Service or facility"></div>
+<div id="aw" class="hide"><label>Admitted to (service) *</label><input name="asvc" id="asvc" list="tsvl" placeholder="e.g. Internal Medicine, Surgery"></div>
+<datalist id="tsvl"></datalist>
+<div id="dw" class="hide"><label>Cause of death</label><input name="cod" list="codl"></div>
+<datalist id="ccl"></datalist><datalist id="mechl"></datalist><datalist id="codl"></datalist>
+<div style="grid-column:1/-1;margin-top:14px"><button>💾 Save patient</button> <button type="reset" class="g">Clear</button> <span id="ok" style="color:var(--teal);font-weight:600"></span></div>
+</form></div></div>
+
+<!-- MONTHLY -->
+<div class="page" id="pg-mon"><div class="card" style="margin-bottom:16px"><h3>Monthly summary</h3><p class="s" id="monS"></p><div style="overflow:auto"><table id="monT"></table></div></div>
+<div class="card"><h3>Top 10 diagnoses by period</h3><p class="s" id="monDS">Number of cases per period for the top 10 diagnoses. Darker = more cases.</p><div style="overflow:auto"><table id="monD"></table></div></div></div>
+<!-- CENSUS -->
+<div class="page" id="pg-census"><div class="grid kpis" id="cenK"></div>
+<div class="card" style="margin-bottom:16px"><h3>Daily census</h3>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+<label style="margin:0">Date</label><input type="date" id="dc" style="width:auto">
+<label style="margin:0">From</label><input type="time" id="dcf" value="00:00" style="width:auto">
+<label style="margin:0">To</label><input type="time" id="dct" value="23:59" style="width:auto">
+<button class="g" id="dt">Today</button>
+<button class="g" id="dall">Whole day</button>
+<button class="g" id="dday">Day shift (07–19)</button>
+<button class="g" id="dnight">Night shift (19–07)</button>
+<button class="g" id="prc">🖨 Print census</button><button class="g" onclick="window.print()">🖨 Print full page</button></div>
+<p class="s" id="cenS"></p><div style="overflow:auto;max-height:60vh"><table id="cenT"></table></div></div>
+<div class="card"><h3>Last 14 days</h3><p class="s">Visits per day, with admissions, deaths and trauma</p><div style="overflow:auto"><table id="cen14"></table></div></div></div>
+
+<!-- PRINT CENSUS -->
+<div class="page" id="pg-print">
+<div class="card">
+<h3>Print census</h3><p class="s">Pick a date and a time range, then print or export the census list.</p>
+<div class="form">
+<div><label>From date</label><input type="date" id="pf"></div>
+<div><label>To date</label><input type="date" id="pt"></div>
+<div><label>From time</label><input type="time" id="pfm" value="00:00"></div>
+<div><label>To time</label><input type="time" id="ptm" value="23:59"></div>
+<div><label>Disposition</label><select id="pdisp"><option value="">All dispositions</option><option>Discharged</option><option>Admitted</option><option>Transferred</option><option>HAMA</option><option>Died</option></select></div>
+<div><label>Resident in charge</label><select id="pres"><option value="">All residents</option></select></div>
+<div><label>Sort</label><select id="psort"><option value="arr">By date &amp; time</option><option value="age">By age</option><option value="disp">By disposition</option></select></div>
+<div><label>Triage (ESI)</label><select id="ptri"><option value="">All levels</option><option value="1">ESI 1 – Resuscitation</option><option value="2">ESI 2 – Emergent</option><option value="3">ESI 3 – Urgent</option><option value="4">ESI 4 – Less urgent</option><option value="5">ESI 5 – Non-urgent</option><option value="1,2">ESI 1–2 (high acuity)</option></select></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+<button id="prun">Apply range</button>
+<button class="g" id="ptoday">Today</button>
+<button class="g" id="pweek">Last 7 days</button>
+<button class="g" id="pmonth">This month</button>
+<button class="g" id="pprint">🖨 Print census</button>
+<button class="g" id="pcsv">⬇ Export CSV</button>
+</div>
+<div class="grid kpis" id="prK"></div>
+<p class="s" id="prS"></p>
+<div style="overflow:auto;max-height:55vh"><table id="prT"></table></div>
+</div></div>
+
+<!-- RESIDENTS -->
+<div class="page" id="pg-res"><div class="grid kpis" id="resK"></div>
+<div class="card" style="margin-bottom:16px"><h3>Year level</h3><p class="s">Choose a level to see its residents, or add a new one.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px" id="lvlBtns"></div>
+<div class="form">
+<div><label>Add a resident — name</label><input id="nrName" placeholder="Dr. Surname, First name"></div>
+<div><label>Year level</label><select id="nrLvl"></select></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="nrAdd">➕ Add resident</button><button class="g" id="nrUndo">Remove last added</button></div>
+<p class="s" id="nrS" style="margin-top:10px"></p>
+<div style="overflow:auto"><table id="lvlT"></table></div></div>
+<div class="card" style="margin-bottom:16px"><h3>Top 10 busiest residents</h3><p class="s">Ranked by visits handled in the selected period. A resident with no visit is listed at zero, not omitted.</p><div id="resTop"></div></div>
+<div class="card" style="margin-bottom:16px"><h3>Lowest 10 residents</h3><p class="s" id="resBotS"></p><div id="resBot"></div></div>
+<div class="card" style="margin-bottom:16px"><h3>Residents by year level</h3><p class="s">Visits and average per resident, per level</p><div style="overflow:auto"><table id="resLvl"></table></div></div>
+<div class="card" style="margin-bottom:16px"><h3>Consultants on duty</h3><p class="s" id="conS"></p>
+<div class="form">
+<div><label>Add a consultant — name</label><input id="ncName" placeholder="Dr. Surname, First name"></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="ncAdd">➕ Add consultant</button></div>
+<div class="form" style="margin-top:10px"><div><label>Remove a consultant — name</label><select id="ncDelSel"></select></div></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="r" id="ncDel">🗑 Remove consultant</button></div>
+<div style="overflow:auto;margin-top:12px"><table id="conT"></table></div></div>
+<div class="card" style="margin-bottom:16px"><h3>Most common ESI per resident</h3>
+<p class="s" id="triS"></p>
+<div style="overflow:auto"><table id="triT"></table></div></div>
+<div class="card"><h3>Workload by resident in charge</h3><p class="s" id="resS"></p>
+<div class="hb" style="grid-template-columns:28px 1fr 60px 60px 60px 70px;font-weight:700;color:#6a7785"><span></span><span>Resident</span><span>Visits</span><span>Adm.</span><span>Died</span><span>Trauma</span></div><div id="resB"></div></div>
+<div class="card"><h3>Resident roster</h3><p class="s">Level, dates on duty and case mix for each resident in the selected period</p><div style="overflow:auto"><table id="resT"></table></div></div></div>
+
+<!-- SECONDARY -->
+<div class="page" id="pg-sec"><div class="grid c2">
+<div class="card"><h3>Top secondary diagnoses</h3><p class="s" id="secS"></p><div id="secT"></div></div>
+<div class="card"><h3>Patients with a secondary diagnosis</h3><p class="s">Primary and secondary diagnosis side by side</p><div style="overflow:auto;max-height:480px"><table id="secL"></table></div></div>
+</div></div>
+<!-- OTHERS -->
+<div class="page" id="pg-oth"><div class="grid c2">
+<div class="card"><h3>Others – specified diagnoses</h3><p class="s" id="othS"></p><div id="othT"></div></div>
+<div class="card"><h3>Cases with primary diagnosis OTHERS</h3><p class="s">Review these regularly. A diagnosis that keeps appearing may deserve its own entry in the list.</p><div style="overflow:auto;max-height:480px"><table id="othL"></table></div></div>
+</div></div>
+<!-- RECORDS -->
+<div class="page" id="pg-rec"><div class="card">
+<h3>Patient records</h3><p class="s">Saved on this device only. Export a CSV regularly as backup.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><input id="q" placeholder="Search case no. or diagnosis…" style="max-width:320px">
+<button class="g" id="csv">⬇ Export CSV</button><button class="g" id="imp">⬆ Import CSV</button><input type="file" id="file" accept=".csv" hidden>
+<button class="g" id="fixres">🧹 Clean up resident names</button><button class="r" id="clr">Delete all</button></div>
+<div style="overflow:auto;max-height:70vh"><table id="rec"></table></div></div></div>
+
+<!-- REFERENCE -->
+<div class="page" id="pg-ref"><div class="card"><h3>Official CRMC Top 10 lists</h3><p class="s">As reported by the department (these are rankings; case counts come from the registry)</p><div class="ref" id="ref"></div></div></div>
+
+<!-- DEFINITIONS -->
+<div class="page" id="pg-def"><div class="card"><h3>Measures &amp; definitions</h3>
+<table class="def">
+<tr><td>Total ED visits</td><td>All patient consultations in the selected year.</td></tr>
+<tr><td>Admission rate</td><td>Admitted ÷ total visits × 100.</td></tr>
+<tr><td>ED mortality rate</td><td>Died in ED ÷ total visits × 100. Deaths are not counted twice as admissions.</td></tr>
+<tr><td>HAMA rate</td><td>Patients leaving against medical advice ÷ total visits × 100.</td></tr>
+<tr><td>Transfer-out rate</td><td>Transferred to another service or facility ÷ total visits × 100.</td></tr>
+<tr><td>Transferred to</td><td>Required when the disposition is Transferred. Enter the receiving service or facility; it appears in the record, the census and the printed census, and becomes a suggestion next time.</td></tr>
+<tr><td>Print this date only</td><td>On the Census tab. Opens a separate landscape sheet for the chosen date — header, counts, one row per visit, and a signature line — leaving the rest of the page out.</td></tr>
+<tr><td>High-acuity share</td><td>ESI 1–2 patients ÷ total visits × 100.</td></tr>
+<tr><td>Period selection</td><td>Daily, weekly, monthly, yearly, or All dates. Use the ‹ › buttons to step one period at a time. Weeks run Monday to Sunday. The report cards compare the selected period with the two preceding ones.</td></tr>
+<tr><td>Resident in charge</td><td>The physician who handled the patient, chosen from the nine-name roster. A name stored from an earlier version is kept so its records stay complete, and Clean up resident names maps it onto the roster. The Residents tab counts visits, admissions, deaths, trauma, duty dates and the resident's most common diagnosis.</td></tr>
+<tr><td>Resident roster</td><td>3rd year: Dr. Biruar, Dr. Agao-Agao. 1st year: Dr. Acob, Dr. Agustin, Dr. Sorupia, Dr. Torino, Dr. Guinzon, Dr. Usodan, Dr. Baraguir. These nine are the only choices in the list.</td></tr>
+<tr><td>Clean up resident names</td><td>On the Patient Records page. Finds stored names that are not in the roster — for example a name typed before the dropdown existed — and asks you to map each one onto a roster name. Nothing changes until you confirm the list.</td></tr>
+<tr><td>Consultant on duty</td><td>A separate list from the residents. Add names on the Residents tab; they appear in the encoder and in the Consultants on duty table with patients seen, dates on duty, admissions, deaths and trauma.</td></tr>
+<tr><td>Year level</td><td>Four levels are available: 1st, 2nd, 3rd and 4th Year. The Residents tab has a button per level showing how many residents it holds; pick one to filter the list.</td></tr>
+<tr><td>Add a resident</td><td>On the Residents tab. Type the name and choose the year level, then Add resident. Added names are saved on this device, appear in the Resident in charge dropdown immediately, and count in every residents figure.</td></tr>
+<tr><td>Most common ESI per resident</td><td>On the Residents tab. For each resident it counts visits at every ESI level, works out the level they see most often, and shows their high-acuity share (ESI 1–2 as a percentage of their visits). The mix bar shows the spread across ESI 1 to 5. Ranked by high-acuity share.</td></tr>
+<tr><td>Triage filter</td><td>On the Print Census tab, ESI 1 to 5 can be chosen individually, or ESI 1–2 together for high-acuity cases.</td></tr>
+<tr><td>Top / lowest residents</td><td>Ranked by visits handled in the selected period. Every roster resident is listed, including those with no visit yet, so the lowest panel shows who has had none. The number on the left of the lowest panel is the overall rank, lowest being 1.</td></tr>
+<tr><td>Daily census</td><td>All visits on one consultation date, listed by time, with the resident in charge, plus a rolling 14-day table.</td></tr>
+<tr><td>Secondary diagnosis</td><td>An additional diagnosis of the same visit, chosen from the same list. Picking "OTHERS (type manually)" opens a box; what you type is recorded as the secondary diagnosis and shown on the Secondary Diagnosis tab under "Secondary typed under OTHERS". Each visit has one primary diagnosis; the secondary one is optional.</td></tr>
+<tr><td>Others</td><td>Visits whose primary diagnosis is OTHERS. The specific diagnosis must be typed and is listed in the Others tab.</td></tr>
+<tr><td>Pediatric share</td><td>Patients under 19 years ÷ total visits. Months and days are converted to years.</td></tr>
+<tr><td>Diagnosis % </td><td>Cases of that diagnosis ÷ all visits in the year. Trauma % uses trauma cases as denominator; death % uses all deaths.</td></tr>
+<tr><td>Age groups</td><td>&lt;1, 1–4, 5–12, 13–18, 19–39, 40–59, 60+ years.</td></tr>
+</table></div></div>
+</div>
+
+<script>
+const crmcLogo='data:image/jpeg;base64,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';
+const REF={
+"JAN-DEC 2025":{dx:["PEDIATRIC COMMUNITY ACQUIRED PNEUMONIA","COMMUNITY ACQUIRED PNEUMONIA","ACUTE GASTROENTERITIS","CEREBROVASCULAR DISEASE","ANEMIA OF CHRONIC DISEASE","ACUTE CORONARY SYNDROME","ACUTE APPENDICITIS","CHRONIC KIDNEY DISEASE","URINARY TRACT INFECTION","TRAUMATIC BRAIN INJURY"],
+ tr:["HEAD INJURY SECONDARY TO VA","GUNSHOT WOUND","FALL","HIT BY OBJECT"],
+ de:["ACUTE MYOCARDIAL INFARCTION","ACUTE RESPIRATORY FAILURE","ACUTE CORONARY SYNDROME","HEMORRHAGIC SHOCK SECONDARY TO MULTIPLE GSW"]},
+"JAN-DEC 2024":{dx:["PEDIATRIC COMMUNITY ACQUIRED PNEUMONIA","COMMUNITY ACQUIRED PNEUMONIA","ACUTE GASTROENTERITIS","CEREBROVASCULAR DISEASE","ANEMIA OF CHRONIC DISEASE","DENGUE FEVER","ACUTE CORONARY SYNDROME","CHRONIC KIDNEY DISEASE","ACUTE APPENDICITIS","TRAUMATIC BRAIN INJURY"],
+ tr:["HEAD INJURY SECONDARY TO VA","GUNSHOT WOUND","FALL","HIT BY OBJECT"],
+ de:["ACUTE MYOCARDIAL INFARCTION","ACUTE RESPIRATORY FAILURE","HEMORRHAGIC SHOCK SEC TO MULTIPLE GUNSHOT WOUND","SEVERE TRAUMATIC BRAIN INJURY","HYPOVOLEMIC SHOCK SEC TO ACUTE BLOOD LOSS SEC TO UGIB"]}};
+const LEVELS=["1st Year","2nd Year","3rd Year","4th Year"];
+document.getElementById("brandLogo").src=crmcLogo;
+const ROSTER0=[["3rd Year","Dr. Biruar"],["3rd Year","Dr. Agao-Agao"],["1st Year","Dr. Acob"],["1st Year","Dr. Agustin"],["1st Year","Dr. Sorupia"],["1st Year","Dr. Torino"],["1st Year","Dr. Guinzon"],["1st Year","Dr. Usodan"],["1st Year","Dr. Baraguir"]];
+const RKEY="crmc_ed_roster_v1";
+const CONKEY="crmc_ed_consultants_v1";
+const CONS0=["Dr. Vacalares","Dr. Sinuhaji","Dr. Delos Reyes"];
+let CONSULT=JSON.parse(localStorage.getItem(CONKEY)||"[]").length?JSON.parse(localStorage.getItem(CONKEY)||"[]"):CONS0.slice();
+const saveCons=()=>localStorage.setItem(CONKEY,JSON.stringify(CONSULT));
+let EXTRA=JSON.parse(localStorage.getItem(RKEY)||"[]");
+let ROSTER=ROSTER0.concat(EXTRA);
+let RYEAR=new Map(ROSTER.map(([y,n])=>[n.toUpperCase(),y]));
+const saveRoster=()=>localStorage.setItem(RKEY,JSON.stringify(EXTRA));
+const syncRoster=()=>{ROSTER=ROSTER0.concat(EXTRA);RYEAR=new Map(ROSTER.map(([y,n])=>[n.toUpperCase(),y]))};
+const fillCon=()=>{const el=$("con");if(!el)return;const v=el.value;el.innerHTML='<option value="">— select —</option>'+CONSULT.map(n=>`<option ${v==n.toUpperCase()?"selected":""}>${esc(n)}</option>`).join("")+U(P.map(p=>p.con).filter(n=>n&&!CONSULT.map(x=>x.toUpperCase()).includes(n))).map(n=>`<option ${v==n?"selected":""}>${esc(n)}</option>`).join("")};
+const U=a=>[...new Set(a)];
+const DX=U(Object.values(REF).flatMap(r=>r.dx)),DX2=DX.concat(["OTHERS (type manually)"]),MECH=U(Object.values(REF).flatMap(r=>r.tr)),COD=U(Object.values(REF).flatMap(r=>r.de));
+const KEY="crmc_ed_v2";let P=JSON.parse(localStorage.getItem(KEY)||"[]");
+const ALIAS={};let mapNames={};
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const save=()=>localStorage.setItem(KEY,JSON.stringify(P));
+const opts=a=>a.map(d=>`<option value="${d}">`).join("");
+const fillDx1=()=>{const el=$("dxsel");if(!el)return;const v=el.value;
+ el.innerHTML='<option value="">— select —</option>'+DX.map(d=>`<option value="${d}"${v===d?" selected":""}>${d}</option>`).join("")+'<option value="OTHERS"'+(v=="OTHERS"?" selected":"")+'>OTHERS (type manually)</option>';};
+ fillDx1();
+const fillDx2=()=>{const el=$("dx2");if(!el)return;const v=el.value;
+ const base=DX.filter(d=>d!="OTHERS");
+ el.innerHTML='<option value="">— none —</option>'+base.map(d=>`<option value="${d}"${v===d?" selected":""}>${d}</option>`).join("")+'<option value="OTHERS (type manually)"'+(v=="OTHERS (type manually)"?" selected":"")+'>OTHERS (type manually)</option>';
+ if(!el.options.length||el.options.length<2){el.innerHTML='<option value="">— none —</option>'+DX2.map(d=>`<option value="${d}">${d}</option>`).join("")}};
+const YRS=LEVELS;
+ const fill=(el,sel)=>{const v=sel&&el.value;el.innerHTML='<option value="">— select —</option>'+YRS.map(y=>`<optgroup label="${y}">${ROSTER.filter(r=>r[0]==y).map(([,n])=>`<option ${v==n?"selected":""}>${n}</option>`).join("")}</optgroup>`).join("")};
+ const REN=()=>U(P.map(p=>p.res).filter(Boolean)).sort();
+ const fillRes=()=>{const v=$("res").value;const ex=REN();
+  let h='<option value="">— select —</option>';
+  YRS.forEach(y=>{h+='<optgroup label="'+y+'">';
+   ROSTER.filter(r=>r[0]==y).forEach(([,n])=>{h+='<option'+(v==n.toUpperCase()?' selected':'')+'>'+n+'</option>'});
+   h+='</optgroup>'});
+  ex.filter(n=>!RYEAR.has(n)).forEach(n=>{h+='<optgroup label="Not in the roster"><option'+(v==n?' selected':'')+'>'+n+'</option></optgroup>'});
+  $("res").innerHTML=h};
+ const RESQ=ROSTER.map(([,n])=>n.toUpperCase());
+ // ---- year-level tabs and resident management
+ let LVLF="";const RESN={};
+ const lvlCounts=()=>LEVELS.map(y=>[y,ROSTER.filter(x=>x[0]==y).length]);
+ function renderLvl(){
+  if(!$("lvlBtns"))return;
+  $("lvlBtns").innerHTML='<button class="g'+(LVLF?"":" ")+'" data-l="">'+(LVLF?"All levels":"All levels ✓")+'</button>'
+   +LEVELS.map(y=>'<button class="g'+((LVLF==y)?" ":"")+'" data-l="'+y+'">'+y+' ('+ROSTER.filter(x=>x[0]==y).length+')'+((LVLF==y)?" ✓":"")+'</button>').join("");
+  $("lvlBtns").querySelectorAll("button").forEach(b=>b.onclick=()=>{LVLF=b.dataset.l;renderLvl()});
+  if($("nrLvl")&&!$("nrLvl").options.length)$("nrLvl").innerHTML=LEVELS.map(y=>'<option>'+y+'</option>').join("");
+  const rows=ROSTER.filter(([y])=>!LVLF||y==LVLF);
+  $("lvlT").innerHTML="<tr><th>Resident in charge</th><th>Year level</th><th>Visits (period)</th><th>In list</th></tr>"+
+   (rows.map(([y,n])=>{const k=n.toUpperCase(),v=RESN[k]??null;
+    return `<tr><td>${esc(n)}</td><td>${y}</td><td>${v==null?"–":v}</td><td>${RYEAR.has(k)?"roster":"added"}</td></tr>`}).join("")||'<tr><td colspan="4">None.</td></tr>');
+  $("nrS").textContent=(LVLF?"Showing "+LVLF:"All four levels shown")+(EXTRA.length?" · "+EXTRA.length+" resident(s) added on this device":"");
+ }
+ function addResident(){
+  const n=$("nrName").value.trim(),y=$("nrLvl").value;
+  if(!n){alert("Please type the resident name.");return}
+  const name=/^dr\.?/i.test(n)?n.replace(/^dr\.?\s*/i,""):n;
+  const full="Dr. "+name.replace(/^\s+|\s+$/g,"");
+  if(ROSTER.some(([,x])=>x.toUpperCase()==full.toUpperCase())){alert(full+" is already in the list.");return}
+  EXTRA.push([y,full]);saveRoster();syncRoster();
+  $("nrName").value="";LVLF=y;fillRes();fillCon();fillPres();
+  alert(full+" added to "+y+".");
+  render();
+ }
+ function fillConSel(){
+  const el=$("ncDelSel");if(!el)return;
+  el.innerHTML=CONSULT.map(n=>'<option>'+esc(n)+'</option>').join("")||'<option value="">— none —</option>';
+ }
+ function removeConsultant(){
+  const el=$("ncDelSel"),n=el?el.value:"";
+  if(!n){alert("No consultant to remove.");return}
+  const used=P.filter(p=>(p.con||"").toUpperCase()==n.toUpperCase()).length;
+  if(!confirm("Remove "+n+" from the consultant list?"+(used?"\n"+used+" saved record(s) already use this name; they keep it until you change them.":"")))return;
+  const i=CONSULT.indexOf(n);
+  if(i>=0){CONSULT.splice(i,1);saveCons()}
+  fillCon();fillConSel();render();alert(n+" removed.");
+ }
+ function addConsultant(){
+  const el=$("ncName");let n=(el.value||"").trim();
+  if(!n){alert("Please type the consultant name.");return}
+  n=/^dr\.?/i.test(n)?n.replace(/^dr\.?\s*/i,""):n;
+  const full="Dr. "+n.replace(/^\s+|\s+$/g,"");
+  if(CONSULT.some(x=>x.toUpperCase()==full.toUpperCase())){alert(full+" is already in the list.");return}
+  CONSULT.push(full);saveCons();el.value="";fillCon();fillConSel();render();alert(full+" added.");
+ }
+ function undoConsultant(){
+  if(CONSULT.length<=CONS0.length){alert("Only the original consultant list is left; nothing has been added on this device.");return}
+  const n=CONSULT[CONSULT.length-1];
+  if(!confirm("Remove "+n+" from the consultant list?\nRecords already saved with this name keep it until you change them."))return;
+  CONSULT.pop();saveCons();fillCon();render();
+ }
+ function undoResident(){
+  if(!EXTRA.length){alert("No residents have been added on this device.");return}
+  const [y,n]=EXTRA[EXTRA.length-1];
+  if(!confirm("Remove "+n+" ("+y+") from the roster?\nRecords already saved with this name keep it until you change them."))return;
+  EXTRA.pop();saveRoster();syncRoster();fillRes();fillCon();fillPres();render();
+ }
+
+fillRes();fillCon();
+ const fillPres=()=>{const el=$("pres");if(!el)return;const v=el.value;el.innerHTML='<option value="">All residents</option>'+ROSTER.map(([,n])=>`<option ${v==n.toUpperCase()?"selected":""}>${n}</option>`).join("")+U(P.map(p=>p.res).filter(n=>n&&!RYEAR.has(n))).map(n=>`<option ${v==n?"selected":""}>${n}</option>`).join("")};
+const fillSvc=()=>{$("tsvl").innerHTML=opts(U(P.map(p=>p.tsvc).concat(P.map(p=>p.asvc)).filter(Boolean)).sort())};
+ const fillCC=()=>{$("ccl").innerHTML=opts(U(P.map(p=>p.cc).filter(Boolean)).sort())};
+ fillSvc();fillCC();fillPres();
+ $("mechl").innerHTML=opts(MECH);$("codl").innerHTML=opts(COD);
+$("ref").innerHTML=Object.entries(REF).map(([y,r])=>`<div><h4>${y}</h4><b>TOP 10 DIAGNOSIS</b><ol>${r.dx.map(x=>`<li>${x}</li>`).join("")}</ol><b>TRAUMA</b><ol>${r.tr.map(x=>`<li>${x}</li>`).join("")}</ol><b>DEATH</b><ol>${r.de.map(x=>`<li>${x}</li>`).join("")}</ol></div>`).join("");
+const isDark=()=>{try{return !!(document.body&&document.body.classList&&document.body.classList.contains&&document.body.classList.contains("dark"))}catch(e){return false}};
+ const COL=()=>isDark()?["#4c9aff","#3fd0c0","#ffb74d","#ff6b6b","#b07cf0","#4fc3f7","#9ccc65","#ff8a65","#90a4ae","#f06292"]:["#1565c0","#00897b","#f59e0b","#d32f2f","#7b1fa2","#0288d1","#689f38","#e64a19","#455a64","#c2185b"];
+ const GCOL=()=>({track:isDark()?"#26313d":"#edf1f6",grid:isDark()?"#26313d":"#e3e8ef",txt:isDark()?"#93a1b1":"#6a7785",fill:isDark()?"#4c9aff33":"#1565c022",line:isDark()?"#4c9aff":"#1565c0"});
+const DCOL={Discharged:"#00897b",Admitted:"#1565c0",Transferred:"#f59e0b",HAMA:"#8d6e63",Died:"#d32f2f"};
+const TCOL=["#d32f2f","#e64a19","#f59e0b","#689f38","#1565c0"];
+// nav
+const T={dash:"Dashboard",mon:"Period Report",enc:"Encode Patient",census:"Census",print:"Print Census",res:"Residents",sec:"Secondary Diagnosis",oth:"Others (Specified)",rec:"Patient Records",ref:"Official Top 10 Lists",def:"Measures & Definitions"};
+document.querySelectorAll("aside a").forEach(a=>a.onclick=()=>{document.querySelectorAll("aside a").forEach(x=>x.classList.remove("on"));a.classList.add("on");
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));$("pg-"+a.dataset.p).classList.add("on");$("ttl").textContent=T[a.dataset.p];});
+const tog=()=>{const o=($("dxsel")?$("dxsel").value:"").toUpperCase()=="OTHERS";$("othw").classList.toggle("hide",!o);$("oth").required=o;$("trw").classList.toggle("hide",$("cat").value!="Trauma");$("dw").classList.toggle("hide",$("dsp").value!="Died");$("tw").classList.toggle("hide",$("dsp").value!="Transferred");$("aw").classList.toggle("hide",$("dsp").value!="Admitted")};
+const tog2=()=>{const el=$("dx2");if(!el)return;const o=el.value=="OTHERS (type manually)";$("oth2w").classList.toggle("hide",!o);$("oth2").required=o};
+ $("dx2").onchange=tog2;
+ $("cat").onchange=$("dsp").onchange=()=>{tog();tog2()};$("dxsel").onchange=()=>{tog();tog2()};$("f").onreset=()=>setTimeout(tog);
+$("f").onsubmit=e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));
+ const f2=new FormData(e.target);
+ const px=$("dxsel")?$("dxsel").value:"";
+ if(px=="OTHERS"){const t=(f2.get("oth")||"").trim().toUpperCase();
+  if(!t){alert("Please type the primary diagnosis.");$("oth").focus();return}
+  o.dx="OTHERS – "+t}
+ else{ if(!px){alert("Please choose a primary diagnosis.");$("dxsel").focus();return} o.dx=px.toUpperCase() }
+ const sx=$("dx2")?$("dx2").value:"";
+ if(sx=="OTHERS (type manually)"){const t=(f2.get("oth2")||"").trim().toUpperCase();
+  if(!t){alert("Please type the secondary diagnosis.");$("oth2").focus();return}
+  o.dx2="OTHERS – "+t}
+ else o.dx2=sx.toUpperCase();
+ o.id=Date.now();["dx","oth","mech","cod","res","con","tsvc","asvc","cc"].forEach(k=>o[k]=(o[k]||"").trim().toUpperCase());
+ if(o.dx!="OTHERS")o.oth="";if(o.cat!="Trauma")o.mech="";if(o.disp!="Died")o.cod="";
+ if(o.disp=="Transferred"){if(!o.tsvc){alert("Please enter where the patient was transferred.");$("tsvc").focus();return}}
+ else o.tsvc="";
+ if(o.disp=="Admitted"){if(!o.asvc){alert("Please enter the service the patient was admitted to.");$("asvc").focus();return}}
+ else o.asvc="";
+ o.res=$("res").value.trim().toUpperCase();
+ if(o.res&&!RESQ.includes(o.res)){const t=mapNames[o.res]||(RESQ.filter(n=>n.toLowerCase().includes(o.res.toLowerCase())||o.res.toLowerCase().includes(n.toLowerCase()))[0]||null);
+  if(t&&confirm('Use "'+t+'" instead of the typed name "'+o.res+'"? Cancel keeps it as typed.'))o.res=t}
+ if(o.res&&o.res!="OTHER"&&!RESQ.includes(o.res)){const k=o.res.toLowerCase();let hit=mapNames[o.res]||ALIAS[k];if(hit===undefined){const near=RESQ.filter(n=>n.toLowerCase().includes(k)||k.includes(n.toLowerCase()));hit=near.length?near[0]:null;ALIAS[k]=hit}
+  if(hit){if(!confirm('Use "'+hit+'" for "'+o.res+'"? Choose Cancel to keep the typed name as it is.'))hit=null;o.res=hit||o.res}}
+ P.push(o);save();e.target.reset();tog();tog2();fillRes();fillCon();fillDx2();fillDx1();
+ const fillPres=()=>{const el=$("pres");if(!el)return;const v=el.value;el.innerHTML='<option value="">All residents</option>'+ROSTER.map(([,n])=>`<option ${v==n.toUpperCase()?"selected":""}>${n}</option>`).join("")+U(P.map(p=>p.res).filter(n=>n&&!RYEAR.has(n))).map(n=>`<option ${v==n?"selected":""}>${n}</option>`).join("")};fillSvc();fillCC();fillPres();render();$("ok").textContent="Saved ✓";setTimeout(()=>$("ok").textContent="",2500)};
+// helpers
+const ageY=p=>{const a=+p.age;return p.unit=="m"?a/12:p.unit=="d"?a/365:a};
+const yearOf=p=>p.arr.slice(0,4);
+const pct=(a,b)=>b?(a/b*100).toFixed(1)+"%":"–";
+const med=a=>{if(!a.length)return null;a=[...a].sort((x,y)=>x-y);const m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2};
+const fmtMin=m=>m==null?"–":m<60?Math.round(m)+" min":Math.floor(m/60)+" h "+Math.round(m%60)+" m";
+function hbars(items,tot,empty){ // items [name,count]
+ if(!items.length)return `<div class="empty">${empty||"No data yet — encode patients to see this chart."}</div>`;
+ const m=items[0][1];
+ return items.map(([k,v],i)=>`<div class="hb"><span class="n">${i+1}</span><span>${esc(k)}</span><span class="tr"><div class="f" style="width:${v/m*100}%;background:${COL()[i%10]}"></div></span><em><b>${v}</b> · ${pct(v,tot)}</em></div>`).join("");
+}
+const rank=(D,f,n)=>{const c={};D.forEach(p=>{const k=f(p);if(k)c[k]=(c[k]||0)+1});return Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,n)};
+function donut(parts,tot){
+ if(!tot)return `<div class="empty">No data yet.</div>`;
+ const G=GCOL();const R=15.9155;let off=25,s="";
+ parts.forEach(([l,v,c])=>{if(!v)return;const d=v/tot*100;s+=`<circle cx="21" cy="21" r="${R}" fill="none" stroke="${c}" stroke-width="6" stroke-dasharray="${d} ${100-d}" stroke-dashoffset="${off}"/>`;off-=d});
+ return `<div class="donutw"><svg viewBox="0 0 42 42" width="170" height="170"><circle cx="21" cy="21" r="${R}" fill="none" stroke="${G.track}" stroke-width="6"/>${s}<text x="21" y="21.5" text-anchor="middle" font-size="7" font-weight="700" fill="${G.txt}">${tot}</text><text x="21" y="27" text-anchor="middle" font-size="3" fill="${G.txt}">visits</text></svg>
+ <div class="legend" style="flex-direction:column">${parts.map(([l,v,c])=>`<span><i style="background:${c}"></i>${l}: <b>${v}</b> (${pct(v,tot)})</span>`).join("")}</div></div>`;
+}
+function vbars(parts,tot){ // [label,value,color]
+ const G=GCOL();
+ if(!tot)return `<div class="empty">No data yet.</div>`;
+ const W=420,H=190,b=28,mx=Math.max(...parts.map(p=>p[1]),1),bw=W/parts.length;
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%">${parts.map(([l,v,c],i)=>{const h=(H-b-18)*v/mx,x=i*bw+bw*.15;return `<rect x="${x}" y="${H-b-h}" width="${bw*.7}" height="${h}" rx="4" fill="${c}"/><text x="${x+bw*.35}" y="${H-b-h-4}" text-anchor="middle" font-size="11" font-weight="700">${v}</text><text x="${x+bw*.35}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="${G.txt}">${l}</text>`}).join("")}</svg>`;
+}
+function trend(D){
+ const G=GCOL();
+ const m=Array(12).fill(0);D.forEach(p=>m[+p.arr.slice(5,7)-1]++);const tot=D.length;
+ if(!tot)return `<div class="empty">No data yet.</div>`;
+ const W=440,H=200,L=30,B=26,mx=Math.max(...m,1),pw=(W-L-10)/11,y=v=>H-B-(H-B-14)*v/mx,x=i=>L+i*pw;
+ const mn=["J","F","M","A","M","J","J","A","S","O","N","D"];
+ const pts=m.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%">
+ ${[0,.5,1].map(f=>`<line x1="${L}" x2="${W-10}" y1="${y(mx*f)}" y2="${y(mx*f)}" stroke="${G.grid}"/><text x="${L-5}" y="${y(mx*f)+4}" text-anchor="end" font-size="10" fill="${G.txt}">${Math.round(mx*f)}</text>`).join("")}
+ <polygon points="${x(0)},${H-B} ${pts} ${x(11)},${H-B}" fill="${G.fill}"/><polyline points="${pts}" fill="none" stroke="${G.line}" stroke-width="2.5"/>
+ ${m.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${G.line}"><title>${v} visits</title></circle><text x="${x(i)}" y="${H-9}" text-anchor="middle" font-size="10.5" fill="${G.txt}">${mn[i]}</text>`).join("")}</svg>`;
+}
+function render(){
+ const MN=["January","February","March","April","May","June","July","August","September","October","November","December"];
+ const pdEl=$("pd");const mode=(pdEl&&pdEl.value)||"m";
+ const rfEl=$("ref");if(rfEl&&!rfEl.value)rfEl.value=today();
+ const refv=(rfEl&&rfEl.value)||today();
+ const day=d=>{const y=+d.slice(0,4),m=+d.slice(5,7)-1,dd=+d.slice(8,10);return new Date(Date.UTC(y,m,dd))};
+ const fmtD=d=>d.toISOString().slice(0,10);
+ const add=(d,n)=>{const x=new Date(d);x.setUTCDate(x.getUTCDate()+n);return x};
+ const dtOf=d=>new Date(Date.UTC(+d.arr.slice(0,4),+d.arr.slice(5,7)-1,+d.arr.slice(8,10)));
+ const wk=d=>{const x=add(d,4-((d.getUTCDay()+6)%7));return x}; // week ends Sunday
+ const PR={d:()=>[day(refv),day(refv)],w:()=>[add(wk(day(refv)),-6),wk(day(refv))],m:()=>[day(refv.slice(0,7)+"-01"),add(new Date(Date.UTC(+refv.slice(0,4),+refv.slice(5,7),1)),-1)],y:()=>[day(refv.slice(0,4)+"-01-01"),day(refv.slice(0,4)+"-12-31")]};
+ let a,b,per,Dy,D;
+ if(mode=="all"){a=null;b=null;per="All dates";Dy=P;D=P}
+ else if(!PR[mode]){a=null;b=null;per="All dates";Dy=P;D=P}
+ else{[a,b]=PR[mode]();const f=x=>{const t=fmtD(x);return x>=a&&x<=b};
+  Dy=P.filter(p=>yearOf(p)==String(b.getUTCFullYear()));D=P.filter(p=>{const t=fmtD(dtOf(p));return t>=fmtD(a)&&t<=fmtD(b)});
+  per={d:fmtD(a),w:fmtD(a)+" to "+fmtD(b),m:MN[b.getUTCMonth()]+" "+b.getUTCFullYear(),y:String(b.getUTCFullYear())}[mode]}
+ const n=D.length;$("plab").textContent=per;
+ $("demoNote").classList.toggle("hide",!P.some(p=>p.demo));
+ const cnt=f=>D.filter(f).length,adm=cnt(p=>p.disp=="Admitted"),died=cnt(p=>p.disp=="Died"),hama=cnt(p=>p.disp=="HAMA"),trf=cnt(p=>p.disp=="Transferred"),hi=cnt(p=>+p.tri<=2),ped=cnt(p=>ageY(p)<19),tra=cnt(p=>p.cat=="Trauma");
+ const sec=cnt(p=>p.dx2),oth=cnt(p=>p.dx=="OTHERS");
+ const K=(l,v,s,c)=>`<div class="k ${c||""}"><span>${l}</span><b>${v}</b><i>${s}</i></div>`;
+ $("kpis").innerHTML="<div class=\"k\"><span>Total ED visits</span><b>"+n+"</b><i>"+per+"</i></div>"
+  +"<div class=\"k t\"><span>Admission rate</span><b>"+pct(adm,n)+"</b><i>"+adm+" admitted</i></div>"
+  +"<div class=\"k r\"><span>ED mortality rate</span><b>"+pct(died,n)+"</b><i>"+died+" deaths</i></div>"
+  +"<div class=\"k r\"><span>High-acuity (ESI 1–2)</span><b>"+pct(hi,n)+"</b><i>"+hi+" patients</i></div>"
+  +"<div class=\"k t\"><span>HAMA / Transfer-out</span><b>"+pct(hama,n)+" / "+pct(trf,n)+"</b><i>"+hama+" · "+trf+" patients</i></div>"
+  +"<div class=\"k\"><span>Pediatric share (&lt;19 y)</span><b>"+pct(ped,n)+"</b><i>"+ped+" patients</i></div>"
+  +"<div class=\"k a\"><span>Trauma cases</span><b>"+tra+"</b><i>"+pct(tra,n)+" of visits</i></div>"
+  +"<div class=\"k\"><span>Secondary diagnoses</span><b>"+sec+"</b><i>visits with one</i></div>"
+  +"<div class=\"k a\"><span>Primary dx: Others</span><b>"+oth+"</b><i>visits under Others</i></div>";
+$("plab").textContent=per;
+ $("topS").textContent=`Ranked by number of cases · % of ${n} visits`;
+ $("top").innerHTML=hbars(rank(D,p=>p.dx,10),n);
+ $("trend").innerHTML=trend(Dy);
+ $("disp").innerHTML=donut(Object.keys(DCOL).map(k=>[k,cnt(p=>p.disp==k),DCOL[k]]),n);
+ $("tri").innerHTML=vbars([1,2,3,4,5].map(t=>["ESI "+t,cnt(p=>+p.tri==t),TCOL[t-1]]),n);
+ const G=[["<1",0,1],["1–4",1,5],["5–12",5,13],["13–18",13,19],["19–39",19,40],["40–59",40,60],["60+",60,999]];
+ const ag=G.map(([l,a,b])=>{const s=D.filter(p=>ageY(p)>=a&&ageY(p)<b);return [l,s.filter(p=>p.sex=="Male").length,s.filter(p=>p.sex=="Female").length]});
+ const mx=Math.max(...ag.map(a=>a[1]+a[2]),1);
+ $("age").innerHTML=n?ag.map(([l,m,f])=>`<div class="hb" style="grid-template-columns:50px 1fr 70px"><span>${l}</span><span class="tr" style="display:flex"><div class="f" style="width:${m/mx*100}%;background:#1565c0" title="Male ${m}"></div><div class="f" style="width:${f/mx*100}%;background:#d81b60" title="Female ${f}"></div></span><em><b>${m+f}</b></em></div>`).join("")+`<div class="legend"><span><i style="background:#1565c0"></i>Male ${cnt(p=>p.sex=="Male")}</span><span><i style="background:#d81b60"></i>Female ${cnt(p=>p.sex=="Female")}</span></div>`:`<div class="empty">No data yet.</div>`;
+ const TR=D.filter(p=>p.cat=="Trauma"),DE=D.filter(p=>p.disp=="Died");
+ $("trS").textContent=`${TR.length} trauma cases`;$("deS").textContent=`${DE.length} deaths`;
+ $("tr").innerHTML=hbars(rank(TR,p=>p.mech,10),TR.length,"No trauma cases with a mechanism yet.");
+ $("de").innerHTML=hbars(rank(DE,p=>p.cod,10),DE.length,"No deaths recorded.");
+ const CANDS={d:[0,1,2],w:[0,1,2,3,4,5],m:[6,7,8],y:[9,10,11]}[mode];
+ let MSL=[],br=null;
+ if(mode=="all"){MSL=U(P.map(p=>p.arr.slice(0,7))).sort().reverse();br=k=>P.filter(p=>p.arr.slice(0,7)==k)}
+ else if(mode=="d"){MSL=[0,1,2].map(i=>fmtD(add(day(refv),i-2)));br=k=>P.filter(p=>p.arr.slice(0,10)==k)}
+ else if(mode=="w"){MSL=[0,1,2].map(i=>fmtD(add(wk(day(refv)),(i-2)*7)));br=k=>P.filter(p=>{const w=add(wk(dtOf(p)),-6);return fmtD(w)==k})}
+ else if(mode=="m"){const y0=+refv.slice(0,4),m0=+refv.slice(5,7);MSL=[0,1,2].map(i=>{const d=new Date(Date.UTC(y0,m0-1+i,1));return d.toISOString().slice(0,7)});br=k=>P.filter(p=>p.arr.slice(0,7)==k)}
+ else{const y0=+refv.slice(0,4);MSL=[y0-2,y0-1,y0].map(String);br=k=>P.filter(p=>yearOf(p)==k)}
+ const MS=MSL.map(k=>mode=="all"?k.slice(5)+"/"+k.slice(2,4):mode=="y"?k:mode=="m"?MN[+k.slice(5,7)-1].slice(0,3)+" "+k.slice(2,4):k.slice(5)+"/"+k.slice(8,10)),by=MSL.map(br);
+ $("monDS").textContent=`Cases per ${mode=="w"?"week":mode=="d"?"day":mode=="y"?"year":mode=="all"?"month":"month"} · darker cell = more cases`;
+ $("monS").textContent=`${per} · compared with the two preceding ${mode=="w"?"weeks":mode=="d"?"days":mode=="y"?"years":"months"}`;
+ const row=(l,f,fmt)=>`<tr><td><b>${l}</b></td>${by.map(a=>`<td>${fmt?fmt(a):a.filter(f).length}</td>`).join("")}<td><b>${fmt?fmt(Dy):Dy.filter(f).length}</b></td></tr>`;
+ $("monT").innerHTML=`<tr><th></th>${MS.map(m=>`<th>${m}</th>`).join("")}<th>Total</th></tr>`+row("Total visits",()=>1)+row("Admitted",p=>p.disp=="Admitted")+row("Discharged",p=>p.disp=="Discharged")+row("Transferred",p=>p.disp=="Transferred")+row("HAMA",p=>p.disp=="HAMA")+row("Died",p=>p.disp=="Died")+row("Trauma",p=>p.cat=="Trauma")+row("ESI 1–2",p=>+p.tri<=2)+row("Pediatric (<19 y)",p=>ageY(p)<19)+row("Male",p=>p.sex=="Male")+row("Female",p=>p.sex=="Female")+row("Mortality rate",null,a=>pct(a.filter(p=>p.disp=="Died").length,a.length))+row("Admission rate",null,a=>pct(a.filter(p=>p.disp=="Admitted").length,a.length));
+ const td=rank(D,p=>p.dx,10);
+ $("monD").innerHTML=td.length?`<tr><th>#</th><th>Diagnosis</th>${MS.map(m=>`<th>${m}</th>`).join("")}<th>Total</th></tr>`+td.map(([k,t],i)=>{const c=by.map(a=>a.filter(p=>p.dx==k).length),mx=Math.max(...c,1);return `<tr><td>${i+1}</td><td>${esc(k)}</td>${c.map(v=>`<td style="background:rgba(21,101,192,${v?(.12+.7*v/mx).toFixed(2):0});color:${v/mx>.6?"#fff":"inherit"};text-align:center">${v||""}</td>`).join("")}<td><b>${t}</b></td></tr>`}).join(""):'<tr><td>No data yet.</td></tr>';
+ const dc=$("dc").value||today();
+ const tf=$("dcf")?($("dcf").value||"00:00"):"00:00",tt=$("dct")?($("dct").value||"23:59"):"23:59";
+ const tOf=p=>p.arr.slice(11,16)||"00:00";
+ const DDAY=P.filter(p=>p.arr.slice(0,10)==dc);
+ const DD=(tf<=tt)?DDAY.filter(p=>{const t=tOf(p);return t>=tf&&t<=tt}):DDAY.filter(p=>{const t=tOf(p);return t>=tf||t<=tt});
+ const win=(tf=="00:00"&&tt=="23:59")?"":(" · "+tf+"–"+tt);
+ $("cenK").innerHTML=`<div class="k"><span>Visits</span><b>${DD.length}</b><i>${dc}</i></div><div class="k t"><span>Admitted</span><b>${DD.filter(p=>p.disp=="Admitted").length}</b><i>${pct(DD.filter(p=>p.disp=="Admitted").length,DD.length)}</i></div><div class="k a"><span>Discharged</span><b>${DD.filter(p=>p.disp=="Discharged").length}</b><i>${pct(DD.filter(p=>p.disp=="Discharged").length,DD.length)}</i></div><div class="k r"><span>Deaths</span><b>${DD.filter(p=>p.disp=="Died").length}</b><i>${pct(DD.filter(p=>p.disp=="Died").length,DD.length)}</i></div><div class="k t"><span>Trauma</span><b>${DD.filter(p=>p.cat=="Trauma").length}</b><i>trauma cases</i></div>${[1,2,3,4,5].map(t=>`<div class="k ${t<=2?"r":t==3?"a":""}"><span>ESI ${t}</span><b>${DD.filter(p=>+p.tri==t).length}</b><i>${esc(["Resuscitation","Emergent","Urgent","Less urgent","Non-urgent"][t-1])}</i></div>`).join("")}<div class="k"><span>Male / Female</span><b>${DD.filter(p=>p.sex=="Male").length} / ${DD.filter(p=>p.sex=="Female").length}</b><i>patients</i></div><div class="k a"><span>Residents on duty</span><b>${U(DD.map(p=>p.res).filter(Boolean)).length}</b><i>${U(DD.map(p=>p.res).filter(Boolean)).join(", ")||"none recorded"}</i></div>`;
+ $("cenS").textContent=DD.length?`${DD.length} visits on ${dc}${win}${win&&DDAY.length!=DD.length?" ("+DDAY.length+" for the whole day)":""} · ${U(DD.map(p=>p.res).filter(Boolean)).join(", ")||"no resident recorded"}`:`No records for ${dc}${win} yet.`;
+ $("cenT").innerHTML="<tr><th>Time</th><th>Case</th><th>Age/Sex</th><th>Chief complaint</th><th>ESI</th><th>Primary diagnosis</th><th>Secondary diagnosis</th><th>Resident in charge</th><th>Consultant</th><th>Disposition</th></tr>"+([...DD].sort((x,y)=>x.arr.localeCompare(y.arr)).map(p=>`<tr><td>${p.arr.slice(11,16)||"–"}</td><td>${esc(p.pid)}</td><td>${esc(p.age)}/${esc(p.sex[0])}</td><td>${esc(p.cc)||"–"}</td><td><span class="tag" style="background:${TCOL[p.tri-1]}">ESI ${p.tri}</span></td><td>${esc(p.dx)}${p.oth?" – "+esc(p.oth):""}</td><td>${esc(p.dx2)||"–"}</td><td>${esc(p.res)||"–"}</td><td>${esc(p.con)||"–"}</td><td><span class="tag" style="background:${DCOL[p.disp]}">${p.disp}</span>${p.disp=="Admitted"&&p.asvc?" <small>to "+esc(p.asvc)+"</small>":p.tsvc?" <small>to "+esc(p.tsvc)+"</small>":""}</td></tr>`).join("")||'<tr><td colspan="10">No visits recorded for this date.</td></tr>');
+ const D14=[...Array(14)].map((_,i)=>fmtD(add(day(dc),i-13))),d14=D14.map(k=>P.filter(p=>p.arr.slice(0,10)==k));
+ $("cen14").innerHTML="<tr><th>Date</th><th>Visits</th><th>Admitted</th><th>Died</th><th>Trauma</th><th>Resident(s)</th></tr>"+D14.map((k,i)=>{const a=d14[i];return `<tr class="${k==dc?"on":""}"><td>${k}</td><td><b>${a.length}</b></td><td>${a.filter(p=>p.disp=="Admitted").length}</td><td>${a.filter(p=>p.disp=="Died").length}</td><td>${a.filter(p=>p.cat=="Trauma").length}</td><td>${U(a.map(p=>p.res).filter(Boolean)).join(", ")||"–"}</td></tr>`}).join("");
+ const rd=D.filter(p=>p.res),rc={};
+ rd.forEach(p=>{const k=p.res.toUpperCase();rc[k]=rc[k]||{n:0,a:0,d:0,t:0,s:new Set(),dx:{}};const v=rc[k];v.n++;v.s.add(p.arr.slice(0,10));if(p.disp=="Admitted")v.a++;if(p.disp=="Died")v.d++;if(p.cat=="Trauma")v.t++;v.dx[p.dx]=(v.dx[p.dx]||0)+1});
+ const RA=Object.entries(rc).sort((x,y)=>y[1].n-x[1].n);
+ Object.keys(RESN).forEach(k=>delete RESN[k]);Object.entries(rc).forEach(([k,v])=>RESN[k]=v.n);
+ const ALL=ROSTER.map(([y,n])=>{const k=n.toUpperCase(),v=rc[k]||{n:0,a:0,d:0,t:0,s:new Set(),dx:{}};return[y,n,v]});
+ if(typeof renderLvl==="function")renderLvl();
+ if(typeof fillDx2==="function")fillDx2();
+ if(typeof fillDx1==="function")fillDx1();
+ $("resK").innerHTML=`<div class="k"><span>Residents</span><b>${RA.length}</b><i>${per}</i></div><div class="k t"><span>Visits with a resident</span><b>${rd.length}</b><i>${pct(rd.length,n)} of ${n} visits</i></div><div class="k a"><span>Dates on duty</span><b>${U(rd.map(p=>p.arr.slice(0,10))).length}</b><i>days covered</i></div><div class="k r"><span>Busiest resident</span><b>${RA.length?RA[0][1].n:0}</b><i>${RA.length?esc(RA[0][0]):"–"}</i></div>${LEVELS.map(y=>`<div class="k"><span>${y}</span><b>${ALL.filter(x=>x[0]==y).reduce((a,x)=>a+x[2].n,0)}</b><i>visits · ${ALL.filter(x=>x[0]==y).length} resident(s)</i></div>`).join("")}`;
+ $("resS").textContent=RA.length?`${RA.length} residents · ${per}${rd.length<n?` · ${n-rd.length} visit(s) have no resident recorded`:""}`:"No resident recorded yet. Add one when encoding a patient.";
+ const AW=ALL.filter(x=>x[2].n>0);
+ const mix=ALL.length?ALL.map(x=>x[2].n).reduce((a,b)=>a+b,0)/ALL.length:0;
+ const hi10=[...ALL].sort((x,y)=>y[2].n-x[2].n||x[1].localeCompare(y[1])).slice(0,10);
+ const rTopS=`${per} · ${ALL.filter(x=>x[2].n==0).length} of ${ALL.length} residents have no visit recorded`;
+ $("resTop").innerHTML="<p class=\"s\">"+rTopS+"</p>"+hi10.map(([y,n,v],i)=>`<div class="hb"><span class="n">${i+1}</span><span>${esc(n)} <small style="color:var(--mut)">${y}</small></span><span class="tr"><div class="f" style="width:${v.n/(hi10[0][2].n||1)*100}%;background:${COL()[i%10]}"></div></span><em><b>${v.n}</b></em></div>`).join("");
+ const lo10=[...ALL].sort((x,y)=>x[2].n-y[2].n||x[1].localeCompare(y[1])).slice(0,10);
+ const nz=AW.length?AW[0][2].n:0;
+ $("resBotS").textContent=`${per} · lowest first${AW.length?` · least busy resident with a visit: ${AW[AW.length-1][1]} (${AW[AW.length-1][2].n})`:" · no visits recorded yet"}`;
+ $("resBot").innerHTML=lo10.map(([y,n,v],i)=>`<div class="hb" style="grid-template-columns:28px minmax(120px,42%) 1fr 70px"><span class="n" style="background:${v.n?"#6a7785":"#b0b8c1"}">${ALL.length-i}</span><span${v.n?"":' style="color:#8a939c"'}>${esc(n)} <small style="color:var(--mut)">${y}</small></span><span class="tr"><div class="f" style="width:${nz?v.n/nz*100:0}%;background:#6a7785"></div></span><em><b>${v.n}</b>${v.n?"":' <span style="color:#d32f2f">no visit</span>'}</em></div>`).join("");
+ const lv=LEVELS.filter(y=>ROSTER.some(x=>x[0]==y));
+ $("resLvl").innerHTML="<tr><th>Level</th><th>Residents</th><th>On duty</th><th>No visit</th><th>Visits</th><th>Average per resident</th><th>Admitted</th><th>Died</th><th>Trauma</th></tr>"+lv.map(y=>{const a=ALL.filter(x=>x[0]==y),on=a.filter(x=>x[2].n>0),v=a.reduce((s,x)=>s+x[2].n,0);
+  return `<tr><td><b>${y}</b></td><td>${a.length}</td><td>${on.length}</td><td>${a.length-on.length}</td><td><b>${v}</b></td><td>${a.length?(v/a.length).toFixed(1):"–"}</td><td>${a.reduce((s,x)=>s+x[2].a,0)}</td><td>${a.reduce((s,x)=>s+x[2].d,0)}</td><td>${a.reduce((s,x)=>s+x[2].t,0)}</td></tr>`}).join("")+`<tr style="background:var(--th)"><td><b>All levels</b></td><td><b>${ALL.length}</b></td><td>${AW.length}</td><td>${ALL.length-AW.length}</td><td><b>${ALL.map(x=>x[2].n).reduce((a,b)=>a+b,0)}</b></td><td>${mix.toFixed(1)}</td><td>${ALL.map(x=>x[2].a).reduce((a,b)=>a+b,0)}</td><td>${ALL.map(x=>x[2].d).reduce((a,b)=>a+b,0)}</td><td>${ALL.map(x=>x[2].t).reduce((a,b)=>a+b,0)}</td></tr>`;
+ // ---- consultants on duty
+ const cRows=CONSULT.map(n=>{const k=n.toUpperCase();const v=D.filter(p=>(p.con||"").toUpperCase()==k);return[n,v.length,new Set(v.map(p=>p.arr.slice(0,10))).size,v.filter(p=>p.disp=="Admitted").length,v.filter(p=>p.disp=="Died").length,v.filter(p=>p.cat=="Trauma").length];
+  }).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+ const extraCon=U(D.map(p=>p.con).filter(n=>n&&!CONSULT.map(x=>x.toUpperCase()).includes(n)));
+ if($("conT")){
+  $("conS").textContent=cRows.length||extraCon.length?`${per} · ${cRows.filter(x=>x[1]).length} of ${cRows.length} consultants saw patients`+(extraCon.length?` · ${extraCon.length} name(s) typed before the list`:""):"No consultants in the list yet.";
+  $("conT").innerHTML="<tr><th>Consultant on duty</th><th>Patients seen</th><th>Dates on duty</th><th>Admitted</th><th>Died</th><th>Trauma</th><th>In list</th></tr>"+
+   (cRows.concat(extraCon.map(n=>{const v=D.filter(p=>p.con==n);return[n,v.length,new Set(v.map(p=>p.arr.slice(0,10))).size,v.filter(p=>p.disp=="Admitted").length,v.filter(p=>p.disp=="Died").length,v.filter(p=>p.cat=="Trauma").length]})).map(([n,c,dd,a2,d2,t2],i)=>`<tr><td>${esc(n)}</td><td><b>${c}</b></td><td>${dd||"–"}</td><td>${a2}</td><td>${d2}</td><td>${t2}</td><td>${i<cRows.length?"list":"typed"}</td></tr>`).join("")||'<tr><td colspan="7">None yet.</td></tr>');
+ }
+ // ---- most common ESI per resident
+ const TQL=[1,2,3,4,5];
+ const triRows=RA.map(([k,v])=>{const c=TQL.map(t=>D.filter(p=>(p.res||"").toUpperCase()==k&&+p.tri==t).length);
+  const tot=c.reduce((a,b)=>a+b,0),mx=Math.max(...c),top=TQL[c.indexOf(mx)];
+  const hi=c[0]+c[1],pctHi=tot?hi/tot*100:0;
+  return {k,c,tot,top,hi,pctHi,hiOnly:c[0]};}).sort((a,b)=>b.hi-a.hi||a.k.localeCompare(b.k));
+ $("triS").textContent=triRows.length?`${per} · ranked by high-acuity share (ESI 1–2) · most common level per resident shown on the right`:"No resident recorded yet.";
+ $("triT").innerHTML="<tr><th>Resident in charge</th><th>Visits</th><th>ESI 1</th><th>ESI 2</th><th>ESI 3</th><th>ESI 4</th><th>ESI 5</th><th>High acuity</th><th>Most common</th><th>Mix</th></tr>"+
+  (triRows.map(x=>`<tr><td>${esc(x.k)}</td><td><b>${x.tot}</b></td>${x.c.map((v,i)=>`<td style="text-align:center;background:${v?(isDark()?"rgba(76,154,255,":"rgba(21,101,192,")+(.08+.5*v/(Math.max(...x.c)||1)).toFixed(2)+")":"transparent"};color:${v/(Math.max(...x.c)||1)>.75?"#fff":"inherit"}">${v||""}</td>`).join("")}<td>${pct(x.hi,x.tot)}${x.tot?`<br><small>${x.hi} patient(s)</small>`:""}</td><td>${x.tot?`<span class="tag" style="background:${TCOL[x.top-1]}">ESI ${x.top}</span>`:"–"}</td><td style="min-width:120px"><div style="display:flex;height:14px;border-radius:3px;overflow:hidden;background:var(--track)">${x.c.map((v,i)=>v?`<div title="ESI ${i+1}: ${v}" style="width:${v/x.tot*100}%;background:${TCOL[i]}"></div>`:"").join("")}</div></td></tr>`).join("")||'<tr><td colspan="8">None yet.</td></tr>');
+ const hiRows=triRows.filter(x=>x.tot).sort((a,b)=>b.pctHi-a.pctHi||b.hi-a.hi)[0];
+ const manyRows=triRows.filter(x=>x.tot).sort((a,b)=>b.tot-a.tot)[0];
+ if(hiRows)$("triS").textContent+=` · highest high-acuity share: ${hiRows.k} (${pct(hiRows.hi,hiRows.tot)} of ${hiRows.tot})`;
+ if(manyRows)$("triS").textContent+=` · most visits: ${manyRows.k} (${manyRows.tot})`;
+ const rmx=RA.length?RA[0][1].n:1;
+ $("resB").innerHTML=RA.length?RA.map(([k,v],i)=>`<div class="hb" style="grid-template-columns:28px 1fr 60px 60px 60px 70px;margin:0"><span class="n">${i+1}</span><span>${esc(k)}</span><span><b>${v.n}</b></span><span>${v.a}</span><span>${v.d}</span><span>${v.t}</span></div><div class="hb" style="grid-template-columns:28px 1fr;margin:0 0 8px"><span></span><span class="tr"><div class="f" style="width:${v.n/rmx*100}%;background:${COL()[i%10]}"></div></span></div>`).join(""):'<div class="empty">No data yet.</div>';
+ $("resT").innerHTML="<tr><th>Resident in charge</th><th>Level</th><th>Dates on duty</th><th>Visits</th><th>Admitted</th><th>Died</th><th>Trauma</th><th>Most common diagnosis</th></tr>"+(RA.map(([k,v])=>{const t=Object.entries(v.dx).sort((x,y)=>y[1]-x[1])[0];return `<tr><td>${esc(k)}</td><td>${RYEAR.get(k)||"–"}</td><td>${v.s.size}</td><td>${v.n}</td><td>${v.a}</td><td>${v.d}</td><td>${v.t}</td><td>${t?esc(t[0])+" ("+t[1]+")":"–"}</td></tr>`}).join("")||'<tr><td colspan="8">None yet.</td></tr>');
+ // ---- Print Census tab
+ const pv=id=>{const e=$(id);return e?e.value:""};
+ function prRows(){
+  const f=pv("pf"),t=pv("pt"),fm=pv("pfm")||"00:00",tm=pv("ptm")||"23:59";
+  const dis=pv("pdisp"),res=pv("pres"),tri=pv("ptri"),srt=pv("psort")||"arr";
+  let R=P.filter(p=>{const d=p.arr.slice(0,10),c=p.arr.slice(11,16)||"00:00";
+   if(f&&d<f)return false;if(t&&d>t)return false;
+   if(d==f&&c<fm)return false;if(d==t&&c>tm)return false;
+   if(dis&&p.disp!=dis)return false;
+   if(res&&(p.res||"").toUpperCase()!=res.toUpperCase())return false;
+   if(tri&&!tri.split(",").includes(String(p.tri)))return false;
+   return true});
+  R.sort((a,b)=>srt=="age"?ageY(a)-ageY(b):srt=="disp"?a.disp.localeCompare(b.disp)||a.arr.localeCompare(b.arr):a.arr.localeCompare(b.arr));
+  return R;
+ }
+ function prLine(p){
+  const adm=p.disp=="Admitted"?p.asvc:p.disp=="Transferred"?p.tsvc:"";
+  return `<tr><td>${p.arr.slice(0,10)}</td><td>${p.arr.slice(11,16)||"–"}</td><td>${esc(p.pid)}</td><td>${esc(p.res)||"–"}</td><td>${esc(p.age)}${{m:"mo",d:"d",y:"y"}[p.unit||"y"]}/${esc(p.sex[0])}</td><td>${esc(p.cc)||"–"}</td><td>${esc(p.dx)}${p.oth?" – "+esc(p.oth):""}</td><td>${esc(p.dx2)||"–"}</td><td><span class="tag" style="background:${TCOL[p.tri-1]}">ESI ${p.tri}</span></td><td><span class="tag" style="background:${DCOL[p.disp]}">${p.disp}</span>${adm?" <small>to "+esc(adm)+"</small>":""}</td></tr>`;
+ }
+ const prHead="<tr><th>Date</th><th>Time</th><th>HRN / Case</th><th>Resident</th><th>Age/Sex</th><th>Chief complaint</th><th>Primary diagnosis</th><th>Secondary</th><th>Triage</th><th>Disposition</th></tr>";
+ function renderPrint(){
+  if(!$("prT"))return;
+  const R=prRows(),tot=R.length;
+  const ad=n=>R.filter(p=>p.disp==n).length;
+  $("prK").innerHTML="<div class=\"k\"><span>Patients</span><b>"+tot+"</b><i>"+(pv("pf")||"start")+" to "+(pv("pt")||"today")+"</i></div>"
+   +"<div class=\"k t\"><span>Admitted</span><b>"+ad("Admitted")+"</b><i>"+pct(ad("Admitted"),tot)+"</i></div>"
+   +"<div class=\"k a\"><span>Discharged</span><b>"+ad("Discharged")+"</b><i>"+pct(ad("Discharged"),tot)+"</i></div>"
+   +"<div class=\"k a\"><span>Transferred</span><b>"+ad("Transferred")+"</b><i>"+pct(ad("Transferred"),tot)+"</i></div>"
+   +"<div class=\"k r\"><span>Died</span><b>"+ad("Died")+"</b><i>"+pct(ad("Died"),tot)+"</i></div>"
+   +"<div class=\"k r\"><span>ESI 1–2</span><b>"+R.filter(p=>+p.tri<=2).length+"</b><i>high acuity</i></div>";
+  $("prS").textContent=tot?tot+" patient(s) in this range · "+pct(ad("Admitted"),tot)+" admitted, "+pct(ad("Discharged"),tot)+" discharged":"No patients in this range.";
+  $("prT").innerHTML=prHead+(R.slice(0,1000).map(prLine).join("")||'<tr><td colspan="10">None.</td></tr>');
+ }
+ function printRange(){
+  const R=prRows();
+  if(!R.length){alert("No patients in the selected range. Nothing to print.");return}
+  const ad=n=>R.filter(p=>p.disp==n).length,svc=U(R.filter(p=>p.disp=="Admitted"||p.disp=="Transferred").map(p=>p.disp=="Admitted"?p.asvc:p.tsvc).filter(Boolean));
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups for this page, then try again.");return}
+  w.document.write("<html><title>ED census</title><style>"
+   +"body{font-family:Segoe UI,Arial,sans-serif;padding:20px;color:#1b2735}"
+   +"h1{font-size:17px;margin:0 0 3px}h2{font-size:12.5px;color:#6a7785;font-weight:400;margin:0 0 12px}"
+   +".k{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;font-size:11.5px}.k b{font-size:14px}"
+   +"table{width:100%;border-collapse:collapse;font-size:10.5px}"
+   +"th{background:var(--th);text-align:left;padding:5px;border:1px solid #d6dee8}"
+   +"td{padding:4px 5px;border:1px solid #e3e8ef}"
+   +".ft{margin-top:14px;font-size:10.5px;color:#6a7785;display:flex;justify-content:space-between}"
+   +"@page{size:landscape;margin:10mm}</style>"
+   +"<div style=\"display:flex;align-items:center;gap:12px;margin-bottom:8px\"><img src=\""+crmcLogo+"\" style=\"width:58px;height:58px;border-radius:50%\"><div><h1>Cotabato Regional &amp; Medical Center</h1><h2 style=\"margin:0\">Department of Emergency Medicine — Patient Census</h2></div></div>"
+   +"<h2>"+(pv("pf")||"start")+" "+(pv("pfm")||"00:00")+" to "+(pv("pt")||"today")+" "+(pv("ptm")||"23:59")
+   +" · "+R.length+" patients"+(pv("pdisp")?" · "+pv("pdisp"):"")+(pv("pres")?" · "+pv("pres"):"")+(svc.length?" · services: "+svc.join(", "):"")+"</h2>"
+   +"<div class=\"k\"><span>Patients <b>"+R.length+"</b></span><span>Admitted <b>"+ad("Admitted")+"</b></span><span>Discharged <b>"+ad("Discharged")+"</b></span><span>Transferred <b>"+ad("Transferred")+"</b></span><span>HAMA <b>"+ad("HAMA")+"</b></span><span>Died <b>"+ad("Died")+"</b></span><span>Trauma <b>"+R.filter(p=>p.cat=="Trauma").length+"</b></span><span>ESI 1 <b>"+R.filter(p=>+p.tri==1).length+"</b></span><span>ESI 2 <b>"+R.filter(p=>+p.tri==2).length+"</b></span><span>ESI 3 <b>"+R.filter(p=>+p.tri==3).length+"</b></span><span>ESI 4 <b>"+R.filter(p=>+p.tri==4).length+"</b></span><span>ESI 5 <b>"+R.filter(p=>+p.tri==5).length+"</b></span></div>"
+   +"<table>"+prHead+R.map(prLine).join("")+"</table>"
+   +"<div class=\"ft\"><span>Prepared by: ____________________</span><span>Printed "+new Date().toLocaleString()+"</span></div>"
+   +"");
+  w.document.close();w.focus();setTimeout(()=>{w.print()},400);
+ }
+ function prCSV(){
+  const R=prRows();if(!R.length){alert("No patients in the selected range.");return}
+  const cols=[["pid","HRN / Case"],["arr","Date & time"],["res","Resident in charge"],["age","Age"],["sex","Sex"],["cc","Chief complaint"],["dx","Primary diagnosis"],["oth","Specified other"],["dx2","Secondary diagnosis"],["tri","Triage"],["disp","Disposition"],["asvc","Admitted to"],["tsvc","Transferred to"],["cat","Category"],["mech","Mechanism"],["cod","Cause of death"]];
+  const rows=[cols.map(c=>'"'+c[1]+'"').join(",")].concat(R.map(p=>cols.map(c=>'"'+String(p[c[0]]??"").replace(/"/g,'""')+'"').join(",")));
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.join("\n")],{type:"text/csv"}));
+  a.download="ed_census_"+(pv("pf")||"start")+"_to_"+(pv("pt")||"today")+".csv";a.click();
+ }
+ const quick=(f,t)=>{$("pf").value=f;$("pt").value=t;renderPrint()};
+ if($("nrAdd")){$("nrAdd").onclick=addResident;$("nrUndo").onclick=undoResident;if($("ncAdd")){$("ncAdd").onclick=addConsultant;if($("ncDel"))$("ncDel").onclick=removeConsultant;$("ncName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addConsultant()}})}$("nrLvl").innerHTML=LEVELS.map(y=>`<option>${y}</option>`).join("");$("nrName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addResident()}});renderLvl()}
+ if($("prun")){$("prun").onclick=renderPrint;$("pprint").onclick=printRange;$("pcsv").onclick=prCSV;
+  ["pf","pt","pfm","ptm","pdisp","pres","ptri","psort"].forEach(id=>{const e=$(id);if(e)e.onchange=renderPrint});
+  const d0=today(),mo=d0.slice(0,8)+"01";
+  const back=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+  $("ptoday").onclick=()=>quick(d0,d0);
+  $("pweek").onclick=()=>quick(back(6),d0);
+  $("pmonth").onclick=()=>quick(mo,d0);
+  if(!$("pf").value){$("pf").value=d0;$("pt").value=d0}
+  renderPrint();
+ }
+ const S2=D.filter(p=>p.dx2),O=D.filter(p=>p.dx=="OTHERS");
+ $("secS").textContent=`${S2.length} of ${n} visits have a secondary diagnosis`;
+ const S2o=S2.filter(p=>/^OTHERS/.test(p.dx2)),S2n=S2.filter(p=>!/^OTHERS/.test(p.dx2));
+ $("secT").innerHTML=hbars(rank(S2n,p=>p.dx2,10),S2n.length,"No secondary diagnoses recorded yet.")
+  +(S2o.length?`<h4 style="margin:16px 0 6px;font-size:13px">Secondary typed under OTHERS (${S2o.length})</h4>`+hbars(rank(S2o,p=>p.dx2.replace(/^OTHERS\s*[–-]\s*/,""),10),S2o.length):"");
+ $("secL").innerHTML="<tr><th>Case</th><th>Date</th><th>Primary</th><th>Secondary</th></tr>"+([...S2].reverse().slice(0,200).map(p=>`<tr><td>${esc(p.pid)}</td><td>${p.arr.slice(0,10)}</td><td>${esc(p.dx)}${p.oth?" – "+esc(p.oth):""}</td><td>${esc(p.dx2)}</td></tr>`).join("")||"<tr><td colspan=4>None yet.</td></tr>");
+ $("othS").textContent=`${O.length} visits (${pct(O.length,n)} of all visits)`;
+ $("othT").innerHTML=hbars(rank(O,p=>p.oth||"(NOT SPECIFIED)",10),O.length,"No cases under Others yet.");
+ $("othL").innerHTML="<tr><th>Case</th><th>Date</th><th>Specified diagnosis</th><th>Disposition</th></tr>"+([...O].reverse().slice(0,200).map(p=>`<tr><td>${esc(p.pid)}</td><td>${p.arr.slice(0,10)}</td><td>${esc(p.oth)||"–"}</td><td>${p.disp}</td></tr>`).join("")||"<tr><td colspan=4>None yet.</td></tr>");
+ // records
+ const q=$("q").value.toLowerCase();
+ const REC=[...P].reverse().filter(p=>!q||(p.pid+p.dx).toLowerCase().includes(q));
+ $("rec").innerHTML="<tr><th>Case</th><th>Resident</th><th>Age</th><th>Sex</th><th>Consultation</th><th>Primary diagnosis</th><th>Secondary diagnosis</th><th>Category</th><th>Triage</th><th>Disposition</th><th></th></tr>"+
+ REC.slice(0,500).map(p=>{return `<tr><td>${esc(p.pid)}${p.demo?" <small>(demo)</small>":""}</td><td>${esc(p.res)||"–"}</td><td>${esc(p.age)}${{m:" mo",d:" d",y:""}[p.unit||"y"]}</td><td>${p.sex}</td><td>${p.arr.replace("T"," ")}</td><td>${esc(p.dx)}${p.oth?`<br><small>Specified: ${esc(p.oth)}</small>`:""}${p.mech?`<br><small>${esc(p.mech)}</small>`:""}${p.cod?`<br><small>Cause of death: ${esc(p.cod)}</small>`:""}</td><td>${esc(p.dx2)||"–"}</td><td>${p.cat}</td><td><span class="tag" style="background:${TCOL[p.tri-1]}">ESI ${p.tri}</span></td><td><span class="tag" style="background:${DCOL[p.disp]}">${p.disp}</span>${p.tsvc?" <small>to "+esc(p.tsvc)+"</small>":""}</td><td><a href="#" onclick="del(${p.id});return false">✕</a></td></tr>`}).join("")||"<tr><td colspan=11>No records.</td></tr>";
+}
+function del(id){if(confirm("Delete this record?")){P=P.filter(p=>p.id!=id);save();render()}}
+function rmDemo(){P=P.filter(p=>!p.demo);save();render()}
+$("ref").onchange=()=>render();
+ $("pd").onchange=()=>render();
+ const shift=n=>{const mode=$("pd").value,d=day($("ref").value||today());let x;
+  if(mode=="d")x=add(d,n);else if(mode=="w")x=add(d,7*n);
+  else if(mode=="m")x=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+n,Math.min(d.getUTCDate(),28)));
+  else if(mode=="y")x=new Date(Date.UTC(d.getUTCFullYear()+n,d.getUTCMonth(),Math.min(d.getUTCDate(),28)));else return;
+  $("ref").value=fmtD(x);render()};
+ $("pv").onclick=()=>shift(-1);$("nx").onclick=()=>shift(1);
+ $("dt").onclick=()=>{$("dc").value=today();render()};
+ if($("dall"))$("dall").onclick=()=>{$("dcf").value="00:00";$("dct").value="23:59";render()};
+ if($("dday"))$("dday").onclick=()=>{$("dcf").value="07:00";$("dct").value="19:00";render()};
+ if($("dnight"))$("dnight").onclick=()=>{$("dcf").value="19:00";$("dct").value="07:00";render()};
+ if($("dcf"))$("dcf").onchange=()=>render();
+ if($("dct"))$("dct").onchange=()=>render();
+ $("prc").onclick=()=>printCensus();
+ function printCensus(){
+  const tfv=$("dcf")?($("dcf").value||"00:00"):"00:00",ttv=$("dct")?($("dct").value||"23:59"):"23:59";
+  const tOfx=p=>p.arr.slice(11,16)||"00:00";
+  const dc=$("dc").value||today(),ALLD=P.filter(p=>p.arr.slice(0,10)==dc);
+  const DD=((tfv<=ttv)?ALLD.filter(p=>{const t=tOfx(p);return t>=tfv&&t<=ttv}):ALLD.filter(p=>{const t=tOfx(p);return t>=tfv||t<=ttv})).sort((a,b)=>a.arr.localeCompare(b.arr));
+  const winT=(tfv=="00:00"&&ttv=="23:59")?"":(" · "+tfv+" to "+ttv);
+  if(!DD.length){alert("No records for "+dc+". Nothing to print.");return}
+  const ad=n=>DD.filter(p=>p.disp==n).length,tr=DD.filter(p=>p.disp=="Transferred");
+  const rows=DD.map(p=>`<tr><td>${p.arr.slice(11,16)||"–"}</td><td>${esc(p.pid)}</td><td>${esc(p.age)}/${esc(p.sex[0])}</td><td>${esc(p.cc)||"–"}</td><td>ESI ${p.tri}</td><td>${esc(p.dx)}${p.oth?" – "+esc(p.oth):""}</td><td>${esc(p.dx2)||"–"}</td><td>${esc(p.res)||"–"}</td><td>${esc(p.con)||"–"}</td><td>${p.disp}${p.disp=="Admitted"&&p.asvc?" to "+esc(p.asvc):""}${p.tsvc?" to "+esc(p.tsvc):""}</td></tr>`).join("");
+  const svc=U(tr.map(p=>p.tsvc).filter(Boolean));
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups for this page, then try again.");return}
+  w.document.write("<html><title>Daily census "+dc+"</title><style>"
+   +"body{font-family:Segoe UI,Arial,sans-serif;padding:24px;color:#1b2735}"
+   +"h1{font-size:18px;margin:0 0 2px}h2{font-size:13px;color:#6a7785;font-weight:400;margin:0 0 14px}"
+   +".k{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px}.k b{font-size:15px}"
+   +"table{width:100%;border-collapse:collapse;font-size:11.5px}"
+   +"th{background:var(--th);text-align:left;padding:6px;border:1px solid #d6dee8}"
+   +"td{padding:5px 6px;border:1px solid #e3e8ef}"
+   +".ft{margin-top:16px;font-size:11px;color:#6a7785;display:flex;justify-content:space-between}"
+   +"@page{size:landscape;margin:12mm}</style>"
+   +"<h1>CRMC Department of Emergency Medicine — Daily Census</h1>"
+   +"<h2>"+dc+winT+" · "+DD.length+" visits</h2>"
+   +"<div class=\"k\"><span>Visits <b>"+DD.length+"</b></span><span>Admitted <b>"+ad("Admitted")+"</b></span><span>Discharged <b>"+ad("Discharged")+"</b></span><span>Transferred <b>"+tr.length+"</b></span><span>HAMA <b>"+ad("HAMA")+"</b></span><span>Died <b>"+ad("Died")+"</b></span><span>Trauma <b>"+DD.filter(p=>p.cat=="Trauma").length+"</b></span><span>ESI 1 <b>"+DD.filter(p=>+p.tri==1).length+"</b></span><span>ESI 2 <b>"+DD.filter(p=>+p.tri==2).length+"</b></span><span>ESI 3 <b>"+DD.filter(p=>+p.tri==3).length+"</b></span><span>ESI 4 <b>"+DD.filter(p=>+p.tri==4).length+"</b></span><span>ESI 5 <b>"+DD.filter(p=>+p.tri==5).length+"</b></span><span>Residents <b>"+(U(DD.map(p=>p.res).filter(Boolean)).join(", ")||"–")+"</b></span><span>Consultants <b>"+(U(DD.map(p=>p.con).filter(Boolean)).join(", ")||"–")+"</b></span></div>"
+   +"<table><tr><th>Time</th><th>Case</th><th>Age/Sex</th><th>Chief complaint</th><th>ESI</th><th>Primary diagnosis</th><th>Secondary diagnosis</th><th>Resident in charge</th><th>Consultant</th><th>Disposition</th></tr>"+rows+"</table>"
+   +"<div class=\"ft\"><span>Prepared by: ____________________</span><span>Printed "+new Date().toLocaleString()+"</span></div>"
+   +"");
+  w.document.close();w.focus();
+  setTimeout(()=>{w.print()},400);
+ }
+ $("dc").onchange=()=>render();
+ $("q").oninput=render;
+$("clr").onclick=()=>{if(confirm("Delete ALL records?")){P=[];save();render()}};
+ $("fixres").onclick=cleanRes;
+// ---- resident name cleanup: map every stored name onto the roster
+ function cleanRes(){
+  const cache={},used=new Map();
+  P.forEach(p=>{if(!p.res)return;const k=p.res.toUpperCase();used.set(k,(used.get(k)||0)+1)});
+  const names=[...used.keys()].sort();
+  const bad=names.filter(n=>!RESQ.includes(n));
+  if(!bad.length&&names.every(n=>RYEAR.has(n))){alert("No cleanup needed. Every resident name already matches the roster.");return}
+  const map={};
+  bad.forEach(n=>{
+   const parts=n.replace(/^DR\.?\s*/,"").split(/[,\s]+/).filter(Boolean);
+   const near=RESQ.filter(t=>parts.length&&parts.some(x=>t.toLowerCase().includes(x.toLowerCase())&&x.length>2));
+   let pick=null;
+   if(near.length==1)pick=near[0];
+   else{
+    const roster=ROSTER.map(([y,rn])=>y+" – "+rn+" ("+rn.toUpperCase()+")").join("\n");
+    const other=names.filter(x=>x!=n).map(x=>"  "+x).join("\n");
+    const msg='Stored name: "'+n+'" appears in '+used.get(n)+' record(s).\n\n'
+      +(near.length?'Close match: '+near.join(", ")+'\n\n':'')
+      +'Type the exact name it should become. Students:\n'+roster
+      +(other?'\n\nOther stored names:\n'+other:'');
+    const ans=prompt(msg);
+    if(ans===null)return;
+    const a=ans.trim().toUpperCase();
+    if(!a)return;
+    if(a=="SKIP")return;
+    pick=a;
+   }
+   map[n]=pick;
+  });
+  const changed=Object.keys(map).filter(n=>map[n]&&map[n]!=n);
+  if(!changed.length){alert("Nothing changed.");return}
+  if(!confirm(changed.length+" name(s) will be updated:\n\n"+changed.map(n=>n+"  →  "+map[n]).join("\n")+"\n\nContinue?"))return;
+  P.forEach(p=>{if(p.res&&map[p.res.toUpperCase()])p.res=map[p.res.toUpperCase()]});
+  mapNames=Object.assign(mapNames||{},map);
+  save();fillRes();fillCon();
+ const fillPres=()=>{const el=$("pres");if(!el)return;const v=el.value;el.innerHTML='<option value="">All residents</option>'+ROSTER.map(([,n])=>`<option ${v==n.toUpperCase()?"selected":""}>${n}</option>`).join("")+U(P.map(p=>p.res).filter(n=>n&&!RYEAR.has(n))).map(n=>`<option ${v==n?"selected":""}>${n}</option>`).join("")};render();
+  alert("Done. "+changed.length+" name(s) updated.");
+ }
+ const H=["pid","age","unit","sex","arr","dx","oth","dx2","res","con","cat","mech","tri","disp","tsvc","asvc","cc","cod"];
+$("csv").onclick=()=>{const rows=[H.join(",")].concat(P.filter(p=>!p.demo).map(p=>H.map(h=>`"${String(p[h]??"").replace(/"/g,'""')}"`).join(",")));
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([rows.join("\n")],{type:"text/csv"}));a.download="crmc_ed_patients.csv";a.click()};
+$("imp").onclick=()=>$("file").click();
+$("file").onchange=async e=>{const L=(await e.target.files[0].text()).trim().split(/\r?\n/).slice(1);
+ L.forEach(l=>{const v=[...l.matchAll(/"((?:[^"]|"")*)"|([^,]+)/g)].map(m=>(m[1]??m[2]).replace(/""/g,'"'));
+ if(v.length>=H.length){const o={};H.forEach((h,i)=>o[h]=v[i]);o.id=Date.now()+Math.random();P.push(o)}});save();render()};
+$("ref").value=today();$("dc").value=today();
+// ---- theme
+ const TKEY="crmc_ed_theme";
+ function applyTheme(d){
+  try{ if(document.body&&document.body.classList) document.body.classList.toggle("dark",d); }catch(e){}
+  try{ if(d)document.documentElement.setAttribute("data-theme","dark");else document.documentElement.removeAttribute("data-theme"); }catch(e){}
+  const b=$("thm");if(b)b.textContent=d?"☀️ Light":"🌙 Dark";
+  const m=document.querySelector('meta[name="theme-color"]');
+  if(m)m.setAttribute("content",d?"#0e141b":"#0a2e52");
+ }
+ function toggleTheme(){const d=!isDark();localStorage.setItem(TKEY,d?"dark":"light");applyTheme(d);if(typeof render==="function")render()}
+ if($("thm"))$("thm").onclick=toggleTheme;
+ applyTheme(localStorage.getItem(TKEY)==="dark");
+
+render();
+</script>
+<script>
+function goHub(){if(window.parent&&window.parent.CRMC){window.parent.CRMC.go("home")}else{location.href="index.html"}}
+</script>
+</body>
+</html>
